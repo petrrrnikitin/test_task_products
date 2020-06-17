@@ -1,28 +1,54 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <main class="grid container">
+      <div class="sub_category_page">
+        <div
+          v-if="!loading"
+          class="column_right column_right_products_container"
+        >
+          <div class="product__area">
+            <div id="products_section">
+              <div class="products_page pg_0">
+                <Product
+                  :key="product.id"
+                  v-for="product in products"
+                  :product="product"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import axios from "axios";
+import Product from "./components/Product";
 
 export default {
   name: "App",
-  components: {
-    HelloWorld
+  components: { Product },
+  data() {
+    return {
+      products: {},
+      loading: true
+    };
+  },
+  created() {
+    axios.get("products.json").then(response => {
+      this.products = response.data;
+      this.loading = false;
+    });
   }
 };
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style>
+.column_right {
+  width: 100%;
+}
+.sub_category_page .column_right_products_container {
+  width: 100%;
 }
 </style>
